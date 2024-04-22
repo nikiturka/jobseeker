@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    container_name: app
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+
+  database:
+    image: postgres
+    container_name: database
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "54320:5432"
+    volumes:
+      - pgdbdata:/var/lib/postgresql/data
+
+volumes:
+  pgdbdata:
