@@ -1,0 +1,10 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static 'main/vacancy_detail.css' %}">
+{% endblock %}
+
+{% block body %}
+    {{ vacancy }}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static 'main/vacancies.css' %}">
+{% endblock %}
+
+{% block body %}
+    {% for vacancy in vacancies %}
+        <div class = "vacancy">
+            <a href="{% url 'vacancy-detail' vacancy.pk %}" class="vacancy-link">{{ vacancy.title }} at {{ vacancy.company__name }}<br></a>
+            {{ vacancy.salary_range.lower }}$ - {{ vacancy.salary_range.upper }}$<br>
+            <hr>
+        </div>
+    {% endfor %}
+{% endblock %}

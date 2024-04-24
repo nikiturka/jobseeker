@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.postgres.fields import IntegerRangeField, DecimalRangeField
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -23,20 +24,32 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class Company(models.Model):
     name = models.CharField(max_length=100)
-    employees = models.IntegerField()
+    employees = IntegerRangeField()
     contact_info = models.CharField(max_length=200)
     description = models.TextField()
+
+    class Meta:
+        verbose_name_plural = "Companies"
+
+    def __str__(self):
+        return self.name
 
 
 class Vacancy(models.Model):
     title = models.CharField(max_length=100)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    salary = models.DecimalField(max_digits=10, decimal_places=2)
-    required_experience = models.CharField(max_length=100)
+    salary_range = IntegerRangeField()
+    required_experience_range = DecimalRangeField()
     description = models.TextField()
     responsibilities = models.TextField()
     requirements = models.TextField()
     benefits = models.TextField()
+
+    class Meta:
+        verbose_name_plural = "Vacancies"
+
+    def __str__(self):
+        return f"{self.title} at {self.company}"
 
 
 class User(models.Model):
