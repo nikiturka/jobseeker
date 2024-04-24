@@ -17,5 +17,5 @@ def all_vacancies(request):
 
 
 def vacancy_detail(request, pk):
-    vacancy = Vacancy.objects.filter(pk=pk)
+    vacancy = Vacancy.objects.filter(pk=pk).select_related("company")
     return render(request, "main/vacancy_detail.html", {"vacancy": vacancy})
