@@ -6,6 +6,12 @@
 {% endblock %}
 
 {% block body %}
+    <form action="{% url 'vacancies-search' %}" method="POST">
+    {% csrf_token %}
+        <input type="text" name="search-query" placeholder="Поиск...">
+        <button type="submit">Поиск</button>
+    </form>
+
     {% for vacancy in vacancies %}
         <div class = "vacancy">
             <a href="{% url 'vacancy-detail' vacancy.pk %}" class="vacancy-link">{{ vacancy.title }} at {{ vacancy.company__name }}<br></a>
