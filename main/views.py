@@ -10,18 +10,28 @@ def all_vacancies(request):
     vacancies = (
         Vacancy.objects.all()
         .select_related("company")
-        .values("pk", "salary_range", "required_experience_range", "title", "company__name")
+        .values("pk", "salary_range", "required_experience_range", "title", "company__name", "description")
     )
 
-    return render(request, "main/vacancies.html", {"vacancies": vacancies})
+    vacancies_count = vacancies.count()
+
+    return render(request, "main/vacancies.html", {"vacancies": vacancies, "vacancies_total": vacancies_count})
 
 
 def vacancies_search(request):
     if request.method == "POST":
         searched = request.POST['search-query']
         if searched:
-            vacancies_searched = Vacancy.objects.filter(title__icontains=searched)
-            return render(request, 'main/vacancies_search.html', {"vacancies_searched": vacancies_searched, "searched": searched})
+            vacancies_searched = (
+                Vacancy
+                .objects
+                .filter(title__icontains=searched)
+                .select_related("company")
+                .values("pk", "salary_range", "required_experience_range", "title", "company__name", "description")
+            )
+            vacancies_count = vacancies_searched.count()
+
+            return render(request, 'main/vacancies.html', {"vacancies": vacancies_searched,  "vacancies_total": vacancies_count})
         else:
             return redirect("vacancies")
     else:
