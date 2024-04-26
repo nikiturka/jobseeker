@@ -34,13 +34,26 @@ def vacancies_search(request):
                 .select_related("company")
                 .values("pk", "salary_range", "required_experience_range", "title", "company__name", "description")
             )
+
+            paginator = Paginator(vacancies_searched, 1)
+            page = request.GET.get('page')
+            vacancies_paginated = paginator.get_page(page)
+
             vacancies_count = vacancies_searched.count()
 
-            return render(request, 'main/vacancies.html', {"vacancies": vacancies_searched,  "vacancies_total": vacancies_count})
+            return render(request, 'main/vacancies_search.html', {"vacancies": vacancies_paginated,  "vacancies_total": vacancies_count})
         else:
             return redirect("vacancies")
     else:
-        return redirect("vacancies")
+        vacancies_searched = request.session['search_results']
+
+        paginator = Paginator(vacancies_searched, 1)
+        page = request.GET.get('page')
+        vacancies_paginated = paginator.get_page(page)
+
+        vacancies_count = len(vacancies_searched)
+
+        return render(request, 'main/vacancies_search.html', {"vacancies": vacancies_paginated, "vacancies_total": vacancies_count})
 
 
 def vacancy_detail(request, pk):
