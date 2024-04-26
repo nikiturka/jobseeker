@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Vacancy
+from django.core.paginator import Paginator
 
 
 def home(request):
@@ -13,9 +14,13 @@ def all_vacancies(request):
         .values("pk", "salary_range", "required_experience_range", "title", "company__name", "description")
     )
 
+    p = Paginator(vacancies, 1)
+    page = request.GET.get('page')
+    vacancies_paginated = p.get_page(page)
+
     vacancies_count = vacancies.count()
 
-    return render(request, "main/vacancies.html", {"vacancies": vacancies, "vacancies_total": vacancies_count})
+    return render(request, "main/vacancies.html", {"vacancies": vacancies_paginated, "vacancies_total": vacancies_count})
 
 
 def vacancies_search(request):

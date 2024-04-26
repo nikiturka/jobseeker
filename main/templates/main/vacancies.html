@@ -31,6 +31,20 @@
 
                     <hr style="border-color: white">
                 {% endfor %}
+
+                <div class="pagination">
+                    {% if vacancies.has_previous %}
+                        <a href="?page=1">&laquo1</a>
+                        <a href="?page={{ vacancies.previous_page_number }}">previous</a>
+                    {% endif %}
+
+                    {{ vacancies.number }}
+
+                    {% if vacancies.has_next %}
+                        <a href="?page={{ vacancies.next_page_number }}"> next </a>
+                        <a href="?page={{ vacancies.paginator.num_pages }}">&raquo{{ vacancies.paginator.num_pages }}</a>
+                    {% endif %}
+                </div>
             </div>
 
             <div class="col-lg-4 right-side">
