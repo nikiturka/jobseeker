@@ -132,7 +132,7 @@ button[type="submit"]:hover {
     background-color: #0056b3;
     color: #fff;
     border-radius: 4px;
-    margin: 0 8px;
+    margin: 0 4px;
 }
 
 .pagination a:first-child,
@@ -141,6 +141,7 @@ button[type="submit"]:hover {
 .pagination a:nth-last-child(2) {
     background-color: #007bff;
     color: #fff;
+    margin: 0 4px;
 }
 
 .pagination a:first-child:hover,
@@ -153,5 +154,4 @@ button[type="submit"]:hover {
 .pagination a:first-child,
 .pagination a:last-child {
     background-color: #007bff;
-    margin: 0 8px;
 }
