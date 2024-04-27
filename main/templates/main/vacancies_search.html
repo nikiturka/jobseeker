@@ -1,21 +1,2 @@
-{% extends "main/base.html" %}
+{% extends "main/vacancies_base.html" %}
 {% load static %}
-
-{% block links %}
-    <link rel="stylesheet" href="{% static 'main/vacancies_search.css' %}">
-{% endblock %}
-
-
-{% block body %}
-    <h1 align="center">You searched for</h1>
-    {% if vacancies_searched %}
-        {{ vacancies_searched }}
-    {% else %}
-        Empty lol
-    {% endif %}
-    <form action="{% url 'vacancies-search' %}" method="POST">
-    {% csrf_token %}
-        <input type="text" name="search-query" placeholder="Поиск...">
-        <button type="submit">Поиск</button>
-    </form>
-{% endblock %}
