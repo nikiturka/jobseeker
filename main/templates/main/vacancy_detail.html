@@ -6,5 +6,64 @@
 {% endblock %}
 
 {% block body %}
-    {{ vacancy }}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 left-side">
+                <div class="go-back"><h6><a href="{% url 'vacancies' %}">Back to vacancies</a></h6></div>
+
+                <h3 class="vacancy-name">{{ vacancy.title }}</h3>
+                <h6 class="vacancy-company-name">{{ vacancy.company.name }}</h6>
+
+                <div class="vacancy-description">
+                    <b>About vacancy:</b><br>
+                    {{ vacancy.description }}
+                </div>
+
+                <div class="vacancy-requirements">
+                    <b>Requirements:</b><br>
+                    {{ vacancy.requirements }}
+                </div>
+
+                <div class="vacancy-responsibilities">
+                    <b>Responsibilities:</b><br>
+                    {{ vacancy.responsibilities }}
+                </div>
+
+                <div class="vacancy-benefits">
+                    <b>Benefits:</b><br>
+                    {{ vacancy.benefits }}
+                </div>
+            </div>
+
+            <div class="col-lg-4 right-side">
+                <div class="application">
+                    <div class="required-experience">
+                        <b>Требуемый опыт:</b><br>
+                        От {{ vacancy.required_experience_range.lower }} до {{ vacancy.required_experience_range.upper }}
+                        {% if vacancy.required_experience_range.upper < 2 %}
+                            года
+                        {% elif vacancy.required_experience_range.upper >= 2 %}
+                            лет
+                        {% endif %}
+                    </div>
+
+                    <hr style="border-color: grey">
+
+                    <div class="middle-part">
+                        country <br> eng<br> level <br>salary <br>office<br>
+                    </div>
+
+                    <hr style="border-color: grey">
+
+                    <div class="apply">
+                        <button class="apply-button">Откликнуться</button>  viewers  replies
+                    </div>
+                </div>
+
+                <div class="similar-vacancies">
+                    Вакансии хз
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

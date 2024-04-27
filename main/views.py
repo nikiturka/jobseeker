@@ -57,5 +57,5 @@ def vacancies_search(request):
 
 
 def vacancy_detail(request, pk):
-    vacancy = Vacancy.objects.filter(pk=pk).select_related("company")
+    vacancy = Vacancy.objects.get(pk=pk)
     return render(request, "main/vacancy_detail.html", {"vacancy": vacancy})
