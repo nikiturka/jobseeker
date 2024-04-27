@@ -34,15 +34,15 @@
 
                 <div class="pagination">
                     {% if vacancies.has_previous %}
-                        <a href="?page=1">&laquo1</a>
-                        <a href="?page={{ vacancies.previous_page_number }}">previous</a>
+                        <a href="?page=1">1</a>
+                        <a href="?page={{ vacancies.previous_page_number }}">{{ vacancies.previous_page_number }}</a>
                     {% endif %}
 
-                    {{ vacancies.number }}
+                    <span class="current-page">{{ vacancies.number }}</span>
 
                     {% if vacancies.has_next %}
-                        <a href="?page={{ vacancies.next_page_number }}"> next </a>
-                        <a href="?page={{ vacancies.paginator.num_pages }}">&raquo{{ vacancies.paginator.num_pages }}</a>
+                        <a href="?page={{ vacancies.next_page_number }}">{{ vacancies.next_page_number }}</a>
+                        <a href="?page={{ vacancies.paginator.num_pages }}">{{ vacancies.paginator.num_pages }}</a>
                     {% endif %}
                 </div>
             </div>

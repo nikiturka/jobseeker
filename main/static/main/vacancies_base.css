@@ -15,6 +15,7 @@
 .left-side{
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .salary-text{
@@ -105,4 +106,52 @@ button[type="submit"]:hover {
 
 .keyword-btn:hover {
     background-color: #0056b3;
+}
+
+.pagination {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.current-page {
+    padding: 8px 16px;
+    background-color: #0056b3;
+    color: #fff;
+    border-radius: 4px;
+    margin: 0 8px;
+}
+
+.pagination a:first-child,
+.pagination a:last-child,
+.pagination a:nth-child(2),
+.pagination a:nth-last-child(2) {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination a:first-child:hover,
+.pagination a:last-child:hover,
+.pagination a:nth-child(2):hover,
+.pagination a:nth-last-child(2):hover{
+    background-color: #0056b3;
+}
+
+.pagination a:first-child,
+.pagination a:last-child {
+    background-color: #007bff;
+    margin: 0 8px;
 }
