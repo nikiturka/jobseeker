@@ -58,4 +58,6 @@ def vacancies_search(request):
 
 def vacancy_detail(request, pk):
     vacancy = Vacancy.objects.get(pk=pk)
-    return render(request, "main/vacancy_detail.html", {"vacancy": vacancy})
+    similar_vacancies = Vacancy.objects.filter(company=vacancy.company).exclude(pk=pk)[:4]
+
+    return render(request, "main/vacancy_detail.html", {"vacancy": vacancy, "similar_vacancies": similar_vacancies})

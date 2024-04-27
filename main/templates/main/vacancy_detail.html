@@ -50,10 +50,10 @@
                     <hr style="border-color: grey">
 
                     <div class="middle-part">
-                        <p>{{ vacancy.country }}</p>
-                        <p>{{ vacancy.english_level }}</p>
-                        <p>{{ vacancy.work_status }}</p>
-                        <p>{{ vacancy.created_at }}</p>
+                        <p>Страна: {{ vacancy.country }}</p>
+                        <p>Уровень английского: {{ vacancy.english_level }}</p>
+                        <p>Занятость: {{ vacancy.work_status }}</p>
+                        <p>Время публикации: {{ vacancy.created_at }}</p>
                     </div>
 
                     <hr style="border-color: grey">
@@ -64,7 +64,15 @@
                 </div>
 
                 <div class="similar-vacancies">
-                    Вакансии хз
+                <h5 style="margin: 10px 0 10px 10px">Другие вакансии этой компании:</h5>
+                    {% for vacancy in similar_vacancies %}
+                        <div class="similar-vacancy">
+                            <a href="{% url 'vacancy-detail' pk=vacancy.pk %}">{{ vacancy.title }}</a>
+                            <span style="color: green">{{ vacancy.salary_range.lower }}$ - {{ vacancy.salary_range.upper }}$</span>
+                            <br>
+                            <span>{{ vacancy.description|truncatechars:50 }}</span>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
