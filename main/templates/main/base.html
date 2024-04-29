@@ -19,7 +19,11 @@
                     <li><a href="{% url 'vacancies' %}">Вакансии</a></li>
                     <li><a href="#">О нас</a></li>
                     <li><a href="#">Контакты</a></li>
-                    <li><a href="{% url 'login' %}">Профиль</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'logout' %}">Выйти</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Гость</a></li>
+                    {% endif %}
                 </ul>
             </nav>
         </header>
@@ -28,27 +32,15 @@
             {% if messages %}
                 {% for message in messages %}
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                      <strong>Wrong credentials!</strong> You should check in on some of those fields below.
+                        {{ message }}
 
                       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
-
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            let alertCloseButtons = document.querySelectorAll('.alert .close');
-                            alertCloseButtons.forEach(function(button) {
-                                button.addEventListener('click', function() {
-                                    let alert = this.closest('.alert');
-                                    alert.parentNode.removeChild(alert);
-                                });
-                            });
-                        });
-                    </script>
                 {% endfor %}
             {% endif %}
-        
+
             {% block body %}
             {% endblock %}
         </div>
@@ -76,5 +68,17 @@
             </div>
         </footer>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let alertCloseButtons = document.querySelectorAll('.alert .close');
+            alertCloseButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    let alert = this.closest('.alert');
+                    alert.parentNode.removeChild(alert);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
