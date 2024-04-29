@@ -78,11 +78,13 @@ class Vacancy(models.Model):
         return f"{self.title} at {self.company}"
 
 
-class User(models.Model):
+class UserProfile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+
     first_name = models.CharField(max_length=32)
     last_name = models.CharField(max_length=32)
-    email = models.EmailField()
-    password = models.CharField(max_length=64)
+    expected_salary_range = IntegerRangeField()
+    experience = models.DecimalField(max_digits=3, decimal_places=1)
     profile_picture = models.IntegerField()
     resume = models.FileField(upload_to='resumes/', blank=True, null=True)
     contact_info = models.CharField(max_length=200)
@@ -95,6 +97,6 @@ class Response(models.Model):
         ('rejected', 'Отклонён'),
     ]
     vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
