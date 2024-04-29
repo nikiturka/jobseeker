@@ -1,0 +1,24 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static 'users/registration.css' %}">
+{% endblock %}
+
+{% block body %}
+    {% if registration_form.errors %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            Ошибка при попытке регистрации, попробуйте ещё раз.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+{% endif %}
+
+    <form action="{% url 'registration' %}" method="POST">
+    {% csrf_token %}
+        {{ registration_form.as_p }}
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}

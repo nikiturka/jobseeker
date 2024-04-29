@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from main.forms import CustomUserCreationForm
 
 
 def login_user(request):
@@ -14,7 +15,7 @@ def login_user(request):
             login(request, user)
             return redirect('vacancies')
         else:
-            messages.success(request, "There was an error logging in, try again!")
+            messages.success(request, "Введены неверные данные, попробуйте снова!")
             return redirect('login')
     else:
         return render(request, 'users/login.html')
@@ -23,5 +24,27 @@ def login_user(request):
 def logout_user(request):
     logout(request)
 
-    messages.success(request, "You've just logged out.")
+    messages.success(request, "Вы вышли из учётной записи.")
     return redirect('vacancies')
+
+
+def register_user(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password1']
+
+            user = authenticate(email=email, password=password)
+            login(request, user)
+
+            messages.success(request, "Регистрация прошла успешно!")
+
+            return redirect('vacancies')
+    else:
+        form = CustomUserCreationForm()
+
+    return render(request, 'users/registration.html', {"registration_form": form})
