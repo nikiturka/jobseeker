@@ -13,12 +13,26 @@
 <body>
     <div id="page-container">
         <header>
-            <a href="{% url 'home' %}"><h1>Jobseeker</h1></a>
+            <a class="header-link" href="{% url 'home' %}"><h1>Jobseeker</h1></a>
             <nav>
                 <ul>
-                    <li><a href="{% url 'vacancies' %}">Вакансии</a></li>
+                    <li><a class="header-link" href="{% url 'vacancies' %}">Вакансии</a></li>
+
                     {% if user.is_authenticated %}
-                        <li><a href="{% url 'logout' %}">{{ user.userprofile.first_name }} {{ user.userprofile.last_name }}</a></li>
+                        <li class="user-profile">
+                            <div class="user-details">
+                                <a class="header-link" href="{% url 'user-detail' user.pk %}">
+                                    <span>{{ user.userprofile.first_name }}</span>
+                                    <span>{{ user.userprofile.last_name }}</span>
+                                </a>
+                            </div>
+
+                            <div class="profile-picture">
+                                <a class="header-link" href="{% url 'user-detail' user.pk %}">
+                                    <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture">
+                                </a>
+                            </div>
+                        </li>
                     {% else %}
                         <li><a href="{% url 'login' %}">Гость</a></li>
                     {% endif %}

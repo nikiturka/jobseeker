@@ -85,9 +85,12 @@ class UserProfile(models.Model):
     last_name = models.CharField(max_length=32)
     expected_salary_range = IntegerRangeField()
     experience = models.DecimalField(max_digits=3, decimal_places=1)
-    profile_picture = models.IntegerField()
+    profile_picture = models.ImageField()
     resume = models.FileField(upload_to='resumes/', blank=True, null=True)
     contact_info = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.user.email
 
 
 class Response(models.Model):

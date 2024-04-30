@@ -1,0 +1,11 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static 'users/user_detail.css' %}">
+{% endblock %}
+
+{% block body %}
+    {{ user_profile.first_name }}
+    <p><a href="{% url 'logout' %}">Выйти из учётной записи</a></p>
+{% endblock %}

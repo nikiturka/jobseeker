@@ -1,7 +1,9 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from main.forms import CustomUserCreationForm
+from main.models import UserProfile
 
 
 def login_user(request):
@@ -48,3 +50,12 @@ def register_user(request):
         form = CustomUserCreationForm()
 
     return render(request, 'users/registration.html', {"registration_form": form})
+
+
+@login_required
+def user_detail(request, pk):
+    try:
+        user_profile = UserProfile.objects.get(pk=pk)
+        return render(request, 'users/user_detail.html', {"user_profile": user_profile})
+    except UserProfile.DoesNotExist:
+        return redirect('404_page')
