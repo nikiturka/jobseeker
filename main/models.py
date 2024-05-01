@@ -45,6 +45,21 @@ class Company(models.Model):
         return self.name
 
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+
+    first_name = models.CharField(max_length=32)
+    last_name = models.CharField(max_length=32)
+    expected_salary_range = IntegerRangeField()
+    experience = models.DecimalField(max_digits=3, decimal_places=1)
+    profile_picture = models.ImageField()
+    resume = models.FileField(upload_to='resumes/', blank=True, null=True)
+    contact_info = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.user.email
+
+
 class Vacancy(models.Model):
     WORK_STATUS_CHOICES = [
         ('fulltime', 'Полный рабочий день'),
@@ -68,6 +83,8 @@ class Vacancy(models.Model):
     benefits = models.TextField()
     country = models.ForeignKey(Country, on_delete=models.PROTECT, blank=True)
     work_status = models.CharField(max_length=32, choices=WORK_STATUS_CHOICES, default='fulltime')
+    views = models.ManyToManyField(UserProfile, related_name='viewed_vacancies')
+    responses = models.ManyToManyField(UserProfile, related_name='responded_vacancies')
     english_level = models.CharField(max_length=32, choices=ENGLISH_LEVEL_CHOICES, default='B2')
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False, blank=True)
 
@@ -76,21 +93,6 @@ class Vacancy(models.Model):
 
     def __str__(self):
         return f"{self.title} at {self.company}"
-
-
-class UserProfile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-
-    first_name = models.CharField(max_length=32)
-    last_name = models.CharField(max_length=32)
-    expected_salary_range = IntegerRangeField()
-    experience = models.DecimalField(max_digits=3, decimal_places=1)
-    profile_picture = models.ImageField()
-    resume = models.FileField(upload_to='resumes/', blank=True, null=True)
-    contact_info = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.user.email
 
 
 class Response(models.Model):

@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from .models import Vacancy
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Vacancy, UserProfile
 from django.core.paginator import Paginator
 
 
@@ -57,7 +57,20 @@ def vacancies_search(request):
 
 
 def vacancy_detail(request, pk):
+    increase_vacancy_views(request, pk)
+
     vacancy = Vacancy.objects.get(pk=pk)
     similar_vacancies = Vacancy.objects.filter(company=vacancy.company).exclude(pk=pk)[:4]
 
     return render(request, "main/vacancy_detail.html", {"vacancy": vacancy, "similar_vacancies": similar_vacancies})
+
+
+def increase_vacancy_views(request, vacancy_id):
+    user = request.user.id
+    vacancy = get_object_or_404(Vacancy, pk=vacancy_id)
+
+    if user not in vacancy.views.all():
+        vacancy.views.add(user)
+        vacancy.save()
+
+    return redirect('vacancy-detail', pk=vacancy_id)
