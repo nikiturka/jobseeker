@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from main.forms import CustomUserCreationForm
 from main.models import UserProfile
+from .forms import UserProfileChangeForm
+from django.shortcuts import get_object_or_404
 
 
 def login_user(request):
@@ -54,8 +56,18 @@ def register_user(request):
 
 @login_required
 def user_detail(request, pk):
-    try:
-        user_profile = UserProfile.objects.get(pk=pk)
-        return render(request, 'users/user_detail.html', {"user_profile": user_profile})
-    except UserProfile.DoesNotExist:
-        return redirect('404_page')
+    user_profile = get_object_or_404(UserProfile, pk=pk)
+
+    if request.method == 'POST':
+        user_form = UserProfileChangeForm(request.POST, request.FILES, instance=user_profile)
+
+        if user_form.is_valid():
+            user_form.save()
+            messages.success(request, "Информация о профиле была изменена.")
+        else:
+            messages.success(request, "Не удалось изменить информацию о профиле.")
+
+    else:
+        user_form = UserProfileChangeForm(instance=user_profile)
+
+    return render(request, 'users/user_detail.html', {'form': user_form})

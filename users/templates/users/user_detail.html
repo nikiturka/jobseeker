@@ -6,6 +6,75 @@
 {% endblock %}
 
 {% block body %}
-    {{ user_profile.first_name }}
-    <p><a href="{% url 'logout' %}">Выйти из учётной записи</a></p>
+    <div class="container user-page">
+        <div class="row">
+            <div class="col-lg-10">
+                <div class="page-header">
+                    <h1>Мой аккаунт</h1>
+                    <hr style="background-color: white" >
+                </div>
+
+                <div class="page-midpart">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group row">
+                            <label for="id_first_name" class="col-sm-2 col-form-label">Имя:</label>
+                            <div class="col-sm-10">
+                                {{ form.first_name }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="id_last_name" class="col-sm-2 col-form-label">Фамилия:</label>
+                            <div class="col-sm-10">
+                                {{ form.last_name }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="id_last_name" class="col-sm-2 col-form-label">Ожидаемая зарплата: </label>
+                            <div class="col-sm-10">
+                                {{ form.expected_salary_range }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="id_last_name" class="col-sm-2 col-form-label">Опыт:</label>
+                            <div class="col-sm-10">
+                                {{ form.experience }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="id_last_name" class="col-sm-2 col-form-label">Контакты:</label>
+                            <div class="col-sm-10">
+                                {{ form.contact_info }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="id_last_name" class="col-sm-2 col-form-label">Резюме:</label>
+                            <div class="col-sm-10">
+                                {{ form.resume }}
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </form>
+                </div>
+
+                <p><a href="{% url 'logout' %}">Выйти из учётной записи</a></p>
+
+                {% if user_errors %}
+                    <div class="alert alert-danger">
+                        <ul>
+                            {% for error in user_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
