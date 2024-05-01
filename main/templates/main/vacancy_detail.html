@@ -53,7 +53,7 @@
                         <p>Страна: {{ vacancy.country }}</p>
                         <p>Уровень английского: {{ vacancy.english_level }}</p>
                         <p>Занятость: {{ vacancy.work_status }}</p>
-                        <p>Время публикации: {{ vacancy.created_at }}</p>
+                        <p>Время публикации: {{ vacancy.created_at|date:"M d" }}</p>
                     </div>
 
                     <hr style="border-color: grey">
