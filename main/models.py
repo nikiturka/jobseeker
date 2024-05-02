@@ -68,7 +68,7 @@ class HR(models.Model):
     last_name = models.CharField(max_length=32)
     profile_picture = models.ImageField()
     contact_info = models.CharField(max_length=200)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.user.email

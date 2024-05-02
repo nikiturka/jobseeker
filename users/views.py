@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from main.forms import CustomUserCreationForm
-from main.models import UserProfile
+from main.models import UserProfile, HR
 from .forms import UserProfileChangeForm
 from django.shortcuts import get_object_or_404
 
@@ -44,6 +44,12 @@ def register_user(request):
 
             user = authenticate(email=email, password=password)
             login(request, user)
+
+            if form.cleaned_data['is_hr'] is True:
+                new_hr = HR.objects.create(user=user, is_hr=True)
+                new_hr.save()
+
+                messages.success(request, "Аккаунт нанимателя создан.")
 
             messages.success(request, "Регистрация прошла успешно!")
 
