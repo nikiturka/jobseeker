@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from main.forms import CustomUserCreationForm
 from main.models import UserProfile, HR
-from .forms import UserProfileChangeForm
+from .forms import UserProfileChangeForm, HRProfileChangeForm
 from django.shortcuts import get_object_or_404
 
 
@@ -62,7 +62,7 @@ def register_user(request):
 
 @login_required
 def user_detail(request, pk):
-    user_profile = get_object_or_404(UserProfile, pk=pk)
+    user_profile = UserProfile.objects.get(user__pk=pk)
 
     if request.method == 'POST':
         user_form = UserProfileChangeForm(request.POST, request.FILES, instance=user_profile)
@@ -77,3 +77,22 @@ def user_detail(request, pk):
         user_form = UserProfileChangeForm(instance=user_profile)
 
     return render(request, 'users/user_detail.html', {'form': user_form})
+
+
+@login_required
+def hr_detail(request, pk):
+    hr_profile = HR.objects.get(user__pk=pk)
+
+    if request.method == 'POST':
+        form = HRProfileChangeForm(request.POST, request.FILES, instance=hr_profile)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Информация о профиле была изменена.")
+        else:
+            messages.success(request, "Не удалось изменить информацию о профиле.")
+
+    else:
+        form = HRProfileChangeForm(instance=hr_profile)
+
+    return render(request, 'users/hr_detail.html', {'form': form})
