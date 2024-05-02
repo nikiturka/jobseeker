@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from main.forms import CustomUserCreationForm
 from main.models import UserProfile, HR
-from .forms import UserProfileChangeForm, HRProfileChangeForm
+from .forms import UserProfileChangeForm, HRProfileChangeForm, UserProfilePictureChangeForm
 from django.shortcuts import get_object_or_404
 
 
@@ -66,17 +66,21 @@ def user_detail(request, pk):
 
     if request.method == 'POST':
         user_form = UserProfileChangeForm(request.POST, request.FILES, instance=user_profile)
+        pfp_form = UserProfilePictureChangeForm(request.POST, request.FILES, instance=user_profile)
 
-        if user_form.is_valid():
+        if user_form.is_valid() and pfp_form.is_valid():
             user_form.save()
+            pfp_form.save()
+
             messages.success(request, "Информация о профиле была изменена.")
         else:
             messages.success(request, "Не удалось изменить информацию о профиле.")
 
     else:
         user_form = UserProfileChangeForm(instance=user_profile)
+        pfp_form = UserProfilePictureChangeForm(instance=user_profile)
 
-    return render(request, 'users/user_detail.html', {'form': user_form})
+    return render(request, 'users/user_detail.html', {'form': user_form, 'pfp_form': pfp_form})
 
 
 @login_required
