@@ -7,5 +7,6 @@ urlpatterns = [
     path('vacancies', views.all_vacancies, name='vacancies'),
     path('vacancies_search', views.vacancies_search, name='vacancies-search'),
     path('vacancies/<int:pk>', views.vacancy_detail, name='vacancy-detail'),
-    path('vacanvies/create_vacancy', views.create_vacancy, name='vacancy-create')
+    path('vacancies/create', views.create_vacancy, name='vacancy-create'),
+    path('vacancies/delete/<int:pk>', views.delete_vacancy, name='vacancy-delete')
 ]

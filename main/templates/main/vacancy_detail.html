@@ -33,6 +33,12 @@
                     <b>Benefits:</b><br>
                     {{ vacancy.benefits }}
                 </div>
+
+                {% if user.hr and vacancy.publisher == user.hr %}
+                    <a href="{% url 'vacancy-delete' vacancy.pk %}">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </a>
+                {% endif %}
             </div>
 
             <div class="col-lg-4 right-side">

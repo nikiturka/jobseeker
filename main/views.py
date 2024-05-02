@@ -105,3 +105,23 @@ def create_vacancy(request):
             return JsonResponse({'Error': 'Вы не являетесь работодателем'})
     else:
         return JsonResponse({'Error': 'Авторизуйтесь, прежде чем зайти на эту страницу.'})
+
+
+def delete_vacancy(request, pk):
+    if request.user.is_authenticated:
+        hr = HR.objects.filter(user=request.user)
+
+        if hr.exists():
+            vacancy = Vacancy.objects.filter(pk=pk, publisher=hr.first())
+
+            if vacancy.exists():
+                vacancy.delete()
+                messages.success(request, "Вакансия удалена.")
+
+                return redirect('vacancies')
+            else:
+                return JsonResponse({'Error': 'Vacancy does not exist.'})
+        else:
+            return JsonResponse({'Error': 'You are not an HR'})
+    else:
+        return JsonResponse({'Error': 'Authorize first.'})
