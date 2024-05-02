@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 
 
 def home(request):
-    return render(request, 'main/base.html')
+    return render(request, 'main/base.html', {"user": request.user})
 
 
 def all_vacancies(request):
@@ -20,7 +20,7 @@ def all_vacancies(request):
 
     vacancies_count = vacancies.count()
 
-    return render(request, "main/vacancies.html", {"vacancies": vacancies_paginated, "vacancies_total": vacancies_count})
+    return render(request, "main/vacancies.html", {"vacancies": vacancies_paginated, "vacancies_total": vacancies_count, "user": request.user})
 
 
 def vacancies_search(request):

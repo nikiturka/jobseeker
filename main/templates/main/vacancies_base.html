@@ -8,6 +8,14 @@
 {% block body %}
     <div class="container vacancies-main-container">
 
+        {% if user.hr %}
+             <div class="create-vacancy">
+                <div class="alert" role="alert">
+                    <a href="#">Открыть новую вакансию</a>
+                </div>
+             </div>
+        {% endif %}
+
         <div class="vacancies-h1-div">
             <h1 class="vacancies-h1">Все вакансии<span class="vacancies-count"> {{ vacancies_total }}</span></h1>
             <hr style="border-color: white">

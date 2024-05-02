@@ -20,6 +20,11 @@
 
                     {% if user.is_authenticated %}
                         <li class="user-profile">
+                        {% if user.hr %}
+                            <a class="header-link" href="#">
+                                ADSAD
+                            </a>
+                        {% else %}
                             <div class="user-details">
                                 <a class="header-link" href="{% url 'user-detail' user.pk %}">
                                     <span>{{ user.userprofile.first_name }}</span>
@@ -32,6 +37,7 @@
                                     <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture">
                                 </a>
                             </div>
+                        {% endif %}
                         </li>
                     {% else %}
                         <li><a href="{% url 'login' %}">Гость</a></li>

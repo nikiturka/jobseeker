@@ -155,3 +155,24 @@ button[type="submit"]:hover {
 .pagination a:last-child {
     background-color: #007bff;
 }
+
+.create-vacancy {
+    margin-top: 20px;
+}
+
+.create-vacancy .alert {
+    background-color: yellow;
+    border-color: yellow;
+    color: #212529;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.25rem;
+}
+
+.create-vacancy .alert a {
+    text-decoration: none;
+    color: #212529;
+}
+
+.create-vacancy .alert a:hover {
+    text-decoration: underline;
+}
