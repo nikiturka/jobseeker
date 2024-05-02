@@ -60,6 +60,20 @@ class UserProfile(models.Model):
         return self.user.email
 
 
+class HR(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+
+    is_hr = models.BooleanField(default=True)
+    first_name = models.CharField(max_length=32)
+    last_name = models.CharField(max_length=32)
+    profile_picture = models.ImageField()
+    contact_info = models.CharField(max_length=200)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.email
+
+
 class Vacancy(models.Model):
     WORK_STATUS_CHOICES = [
         ('fulltime', 'Полный рабочий день'),
