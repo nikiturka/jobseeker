@@ -4,8 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from main.forms import CustomUserCreationForm
 from main.models import UserProfile, HR
-from .forms import UserProfileChangeForm, HRProfileChangeForm, UserProfilePictureChangeForm
-from django.shortcuts import get_object_or_404
+from .forms import UserProfileChangeForm, HRProfileChangeForm, UserProfilePictureChangeForm, HRProfilePictureChangeForm
 
 
 def login_user(request):
@@ -89,14 +88,18 @@ def hr_detail(request, pk):
 
     if request.method == 'POST':
         form = HRProfileChangeForm(request.POST, request.FILES, instance=hr_profile)
+        pfp_form = HRProfilePictureChangeForm(request.POST, request.FILES, instance=hr_profile)
 
-        if form.is_valid():
+        if form.is_valid() and pfp_form.is_valid():
             form.save()
+            pfp_form.save()
+
             messages.success(request, "Информация о профиле была изменена.")
         else:
             messages.success(request, "Не удалось изменить информацию о профиле.")
 
     else:
         form = HRProfileChangeForm(instance=hr_profile)
+        pfp_form = HRProfilePictureChangeForm(instance=hr_profile)
 
-    return render(request, 'users/hr_detail.html', {'form': form})
+    return render(request, 'users/hr_detail.html', {'form': form, "pfp_form": pfp_form})

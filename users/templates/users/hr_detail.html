@@ -11,10 +11,15 @@
             <div class="col-lg-10">
                 <div class="page-header">
                     <h1>Мой аккаунт</h1>
+                    <div class="page-header-links">
+                        <a href="#" onclick="showProfileInfoForm(event)">Информация о профиле</a>
+                        <a href="#" onclick="showAvatarImage(event)">Аватар</a>
+                        <a href="#">Опубликованные вакансии</a>
+                    </div>
                     <hr style="background-color: white" >
                 </div>
 
-                <div class="page-midpart">
+                <div class="page-midpart" id="profile-info-form">
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-group row">
@@ -28,6 +33,34 @@
                             <label for="id_last_name" class="col-sm-2 col-form-label">Фамилия:</label>
                             <div class="col-sm-10">
                                 {{ form.last_name }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="id_first_name" class="col-sm-2 col-form-label">Контакты:</label>
+                            <div class="col-sm-10">
+                                {{ form.contact_info }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="id_first_name" class="col-sm-2 col-form-label">Компания:</label>
+                            <div class="col-sm-10">
+                                {{ form.company }}
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </form>
+                </div>
+
+                <div class="page-midpart pfp-div" id="profile-picture-form" style="display: none;">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group row">
+                            <div class="col-sm-10">
+                                <img src="{{ pfp_form.instance.profile_picture.url }}" alt="Profile Picture">
+                                {{ pfp_form }}
                             </div>
                         </div>
 
@@ -49,4 +82,18 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function showProfileInfoForm(event) {
+            event.preventDefault();
+            document.getElementById("profile-info-form").style.display = "block";
+            document.getElementById("profile-picture-form").style.display = "none";
+        }
+
+        function showAvatarImage(event) {
+            event.preventDefault();
+            document.getElementById("profile-info-form").style.display = "none";
+            document.getElementById("profile-picture-form").style.display = "block";
+        }
+    </script>
 {% endblock %}
