@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
-from .models import CustomUser
+
+from .models import CustomUser, Vacancy
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -23,3 +24,16 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = ("email",)
+
+
+class VacancyCreationForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'form-control', 'style': 'width: 50%;'})
+
+    class Meta:
+        model = Vacancy
+        exclude = ('views', 'responses', 'created_at', 'publisher')
+

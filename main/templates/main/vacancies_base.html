@@ -11,7 +11,7 @@
         {% if user.hr %}
              <div class="create-vacancy">
                 <div class="alert" role="alert">
-                    <a href="#">Открыть новую вакансию</a>
+                    <a href="{% url 'vacancy-create' %}">Открыть новую вакансию</a>
                 </div>
              </div>
         {% endif %}

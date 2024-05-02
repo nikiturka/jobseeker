@@ -1,5 +1,9 @@
+from django.contrib import messages
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Vacancy, UserProfile
+
+from .forms import VacancyCreationForm
+from .models import Vacancy, HR
 from django.core.paginator import Paginator
 
 
@@ -56,8 +60,8 @@ def vacancies_search(request):
         return render(request, 'main/vacancies_search.html', {"vacancies": vacancies_paginated, "vacancies_total": vacancies_count})
 
 
-def vacancy_detail(request, pk):
-    increase_vacancy_views(request, pk)
+def vacancy_detail(request, pk):  # add hr views
+    # increase_vacancy_views(request, pk)
 
     vacancy = Vacancy.objects.get(pk=pk)
     similar_vacancies = Vacancy.objects.filter(company=vacancy.company).exclude(pk=pk)[:4]
@@ -74,3 +78,30 @@ def increase_vacancy_views(request, vacancy_id):
         vacancy.save()
 
     return redirect('vacancy-detail', pk=vacancy_id)
+
+
+def create_vacancy(request):
+    if request.user.is_authenticated:
+        is_hr = HR.objects.filter(user=request.user).exists()
+
+        if is_hr:
+            if request.method == 'POST':
+                form = VacancyCreationForm(request.POST)
+
+                if form.is_valid():
+                    vacancy = form.save(commit=False)
+                    vacancy.publisher = HR.objects.get(user=request.user)
+                    vacancy.save()
+
+                    messages.success(request, "Вакансия размещена.")
+                else:
+                    messages.success(request, "Не удалось разместить вакансию.")
+
+            else:
+                form = VacancyCreationForm()
+
+            return render(request, 'main/vacancy_create.html', {"form": form})
+        else:
+            return JsonResponse({'Error': 'Вы не являетесь работодателем'})
+    else:
+        return JsonResponse({'Error': 'Авторизуйтесь, прежде чем зайти на эту страницу.'})

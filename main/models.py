@@ -101,6 +101,7 @@ class Vacancy(models.Model):
     responses = models.ManyToManyField(UserProfile, related_name='responded_vacancies')
     english_level = models.CharField(max_length=32, choices=ENGLISH_LEVEL_CHOICES, default='B2')
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False, blank=True)
+    publisher = models.ForeignKey(HR, on_delete=models.PROTECT, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Vacancies"
