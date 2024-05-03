@@ -1,9 +1,8 @@
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-
 from .forms import VacancyCreationForm
-from .models import Vacancy, HR, UserProfile
+from .models import Vacancy, HR
 from django.core.paginator import Paginator
 
 
@@ -60,36 +59,43 @@ def vacancies_search(request):
         return render(request, 'main/vacancies_search.html', {"vacancies": vacancies_paginated, "vacancies_total": vacancies_count})
 
 
-def vacancy_detail(request, pk):  # add hr views
-    # increase_vacancy_views(request, pk)
-
-    vacancy = Vacancy.objects.get(pk=pk)
+def vacancy_detail(request, pk):
+    vacancy = get_object_or_404(Vacancy, pk=pk)
     similar_vacancies = Vacancy.objects.filter(company=vacancy.company).exclude(pk=pk)[:4]
+    user = request.user
 
-    if request.POST:
-        user = UserProfile.objects.get(user=request.user)
+    if user.is_authenticated:
+        if hasattr(user, 'userprofile'):
+            user_profile = user.userprofile
 
-        if user not in vacancy.responses.all():
-            vacancy.responses.add(user)
+            if user_profile not in vacancy.views.all():
+                vacancy.views.add(user_profile)
+                vacancy.save()
 
-            messages.success(request, 'Вы откликнулись на вакансию.')
-        else:
-            messages.success(request, 'Вы уже откликались на эту вакансию.')
+            if request.method == 'POST':
+                if user_profile not in vacancy.responses.all():
+                    vacancy.responses.add(user_profile)
+                    vacancy.save()
 
-        return redirect('vacancies')
+                    messages.success(request, 'Вы откликнулись на вакансию.')
+                else:
+                    messages.error(request, 'Вы уже откликались на эту вакансию.')
+                return redirect('vacancy-detail', pk=pk)
+
+            return render(request, "main/vacancy_detail.html", {"vacancy": vacancy, "similar_vacancies": similar_vacancies})
+
+        elif hasattr(user, 'hr'):
+            if request.method == 'POST':
+                messages.error(request, 'HR не может откликаться на вакансии.')
+                return redirect('vacancy-detail', pk=pk)
+    else:
+        if request.method == 'POST':
+            messages.error(request, 'Авторизуйтесь, чтобы откликаться на вакансии.')
+            return redirect('vacancy-detail', pk=pk)
+
+        return render(request, "main/vacancy_detail.html", {"vacancy": vacancy, "similar_vacancies": similar_vacancies})
 
     return render(request, "main/vacancy_detail.html", {"vacancy": vacancy, "similar_vacancies": similar_vacancies})
-
-
-def increase_vacancy_views(request, vacancy_id):
-    user = request.user.id
-    vacancy = get_object_or_404(Vacancy, pk=vacancy_id)
-
-    if user not in vacancy.views.all():
-        vacancy.views.add(user)
-        vacancy.save()
-
-    return redirect('vacancy-detail', pk=vacancy_id)
 
 
 def create_vacancy(request):
