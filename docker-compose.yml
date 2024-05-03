@@ -1,6 +1,9 @@
 version: '3'
 
 services:
+  redis:
+    image: "redis:alpine"
+
   app:
     build: .
     container_name: app
@@ -11,6 +14,7 @@ services:
       - "8000:8000"
     depends_on:
       - database
+      - redis
 
   database:
     image: postgres
@@ -22,6 +26,15 @@ services:
       - "54320:5432"
     volumes:
       - pgdbdata:/var/lib/postgresql/data
+
+  celery:
+    build: .
+    container_name: celery
+    command: celery --app=jobseeker worker -l INFO
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - redis
 
 volumes:
   pgdbdata:
