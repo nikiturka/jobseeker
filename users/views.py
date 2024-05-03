@@ -67,8 +67,10 @@ def user_detail(request, pk):
         user_form = UserProfileChangeForm(request.POST, request.FILES, instance=user_profile)
         pfp_form = UserProfilePictureChangeForm(request.POST, request.FILES, instance=user_profile)
 
-        if user_form.is_valid() and pfp_form.is_valid():
+        if user_form.is_valid():
             user_form.save()
+
+        if pfp_form.is_valid():
             pfp_form.save()
 
             messages.success(request, "Информация о профиле была изменена.")
@@ -90,8 +92,10 @@ def hr_detail(request, pk):
         form = HRProfileChangeForm(request.POST, request.FILES, instance=hr_profile)
         pfp_form = HRProfilePictureChangeForm(request.POST, request.FILES, instance=hr_profile)
 
-        if form.is_valid() and pfp_form.is_valid():
+        if form.is_valid():
             form.save()
+
+        if pfp_form.is_valid():
             pfp_form.save()
 
             messages.success(request, "Информация о профиле была изменена.")
