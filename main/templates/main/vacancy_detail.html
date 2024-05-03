@@ -65,7 +65,13 @@
                     <hr style="border-color: grey">
 
                     <div class="apply">
-                        <button class="apply-button">Откликнуться</button>  viewers: {{ vacancy.views.count }}  replies: {{ vacancy.responses.count }}
+                        <form action="{% url 'vacancy-detail' vacancy.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="apply">
+                            <button type="submit" class="apply-button">Откликнуться</button>
+                            viewers: {{ vacancy.views.count }}  replies: {{ vacancy.responses.count }}
+                        </form>
+
                     </div>
                 </div>
 

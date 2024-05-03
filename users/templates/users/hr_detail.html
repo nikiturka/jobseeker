@@ -14,7 +14,7 @@
                     <div class="page-header-links">
                         <a href="#" onclick="showProfileInfoForm(event)">Информация о профиле</a>
                         <a href="#" onclick="showAvatarImage(event)">Аватар</a>
-                        <a href="#">Опубликованные вакансии</a>
+                        <a href="#" onclick="showPostedVacancies(event)">Опубликованные вакансии</a>
                     </div>
                     <hr style="background-color: white" >
                 </div>
@@ -68,6 +68,15 @@
                     </form>
                 </div>
 
+                <div class="page-midpart pfp-div" style="display: none;" id="posted-vacancies">
+                    {% for vacancy in hr_vacancies %}
+                        {{ vacancy }}<br>
+                        {% for response in vacancy.responses.all %}
+                            {{ response }}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+
                 <p><a href="{% url 'logout' %}">Выйти из учётной записи</a></p>
 
                 {% if user_errors %}
@@ -88,12 +97,21 @@
             event.preventDefault();
             document.getElementById("profile-info-form").style.display = "block";
             document.getElementById("profile-picture-form").style.display = "none";
+            document.getElementById("posted-vacancies").style.display = "none";
         }
 
         function showAvatarImage(event) {
             event.preventDefault();
             document.getElementById("profile-info-form").style.display = "none";
             document.getElementById("profile-picture-form").style.display = "block";
+            document.getElementById("posted-vacancies").style.display = "none";
+        }
+
+        function showPostedVacancies(event) {
+            event.preventDefault();
+            document.getElementById("profile-info-form").style.display = "none";
+            document.getElementById("profile-picture-form").style.display = "none";
+            document.getElementById("posted-vacancies").style.display = "block";
         }
     </script>
 {% endblock %}

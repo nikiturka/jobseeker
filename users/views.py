@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from main.forms import CustomUserCreationForm
-from main.models import UserProfile, HR
+from main.models import UserProfile, HR, Vacancy
 from .forms import UserProfileChangeForm, HRProfileChangeForm, UserProfilePictureChangeForm, HRProfilePictureChangeForm
 
 
@@ -88,6 +88,8 @@ def user_detail(request, pk):
 def hr_detail(request, pk):
     hr_profile = HR.objects.get(user__pk=pk)
 
+    hr_vacancies = Vacancy.objects.filter(publisher=hr_profile)
+
     if request.method == 'POST':
         form = HRProfileChangeForm(request.POST, request.FILES, instance=hr_profile)
         pfp_form = HRProfilePictureChangeForm(request.POST, request.FILES, instance=hr_profile)
@@ -106,4 +108,4 @@ def hr_detail(request, pk):
         form = HRProfileChangeForm(instance=hr_profile)
         pfp_form = HRProfilePictureChangeForm(instance=hr_profile)
 
-    return render(request, 'users/hr_detail.html', {'form': form, "pfp_form": pfp_form})
+    return render(request, 'users/hr_detail.html', {'form': form, "pfp_form": pfp_form, "hr_vacancies": hr_vacancies})

@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import VacancyCreationForm
-from .models import Vacancy, HR
+from .models import Vacancy, HR, UserProfile
 from django.core.paginator import Paginator
 
 
@@ -65,6 +65,18 @@ def vacancy_detail(request, pk):  # add hr views
 
     vacancy = Vacancy.objects.get(pk=pk)
     similar_vacancies = Vacancy.objects.filter(company=vacancy.company).exclude(pk=pk)[:4]
+
+    if request.POST:
+        user = UserProfile.objects.get(user=request.user)
+
+        if user not in vacancy.responses.all():
+            vacancy.responses.add(user)
+
+            messages.success(request, 'Вы откликнулись на вакансию.')
+        else:
+            messages.success(request, 'Вы уже откликались на эту вакансию.')
+
+        return redirect('vacancies')
 
     return render(request, "main/vacancy_detail.html", {"vacancy": vacancy, "similar_vacancies": similar_vacancies})
 
