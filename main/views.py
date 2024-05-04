@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import VacancyCreationForm
 from .models import Vacancy, HR
 from django.core.paginator import Paginator
+from .tasks import notify_publisher_on_vacancy_reply
 
 
 def home(request):
@@ -78,6 +79,8 @@ def vacancy_detail(request, pk):
                     vacancy.save()
 
                     messages.success(request, 'Вы откликнулись на вакансию.')
+
+                    notify_publisher_on_vacancy_reply.delay(vacancy.id, vacancy.publisher.id)
                 else:
                     messages.error(request, 'Вы уже откликались на эту вакансию.')
                 return redirect('vacancy-detail', pk=pk)
