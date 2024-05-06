@@ -45,7 +45,7 @@ def vacancies_search(request):
 
             vacancies_count = vacancies_searched.count()
 
-            return render(request, 'main/vacancies_search.html', {"vacancies": vacancies_paginated,  "vacancies_total": vacancies_count})
+            return render(request, 'main/vacancies_search.html', {"vacancies": vacancies_paginated, "vacancies_total": vacancies_count})
         else:
             return redirect("vacancies")
     else:
