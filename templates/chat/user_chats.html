@@ -1,0 +1,12 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static 'chat/user_chats.css' %}">
+{% endblock %}
+
+{% block body %}
+    {% for chat in chats %}
+        <a href="{% url 'user-chat' user_id=user.id chat_id=chat.id %}">{{ chat }}</a>
+    {% endfor %}
+{% endblock %}

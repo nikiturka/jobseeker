@@ -16,6 +16,7 @@
             <a class="header-link" href="{% url 'home' %}"><h1>Jobseeker</h1></a>
             <nav>
                 <ul>
+                    <li><a class="header-link" href="{% url 'user-chats' user_id=user.pk %}">Чаты</a></li>
                     <li><a class="header-link" href="{% url 'vacancies' %}">Вакансии</a></li>
 
                     {% if user.is_authenticated %}
