@@ -1,12 +1,22 @@
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
+import json
+from asgiref.sync import sync_to_async
 
 
-class ChatConsumer(WebsocketConsumer):
-    def connect(self):
-        pass
+class ChatConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.room_name = self.scope['url_route']['kwargs']['room_name']
+        self.room_group_name = f'chat_{self.room_name}'
 
-    def disconnect(self, close_code):
-        pass
+        await self.channel_layer.group.add(
+            self.room_name,
+            self.room_group_name
+        )
 
-    def receive(self, text_data):
-        pass
+        await self.accept()
+
+    async def disconnect(self, code):
+        await self.channel_layer.group_discard(
+            self.room_name,
+            self.room_group_name
+        )
