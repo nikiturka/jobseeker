@@ -6,5 +6,27 @@
 {% endblock %}
 
 {% block body %}
-    {{ chat }}
+    <div>Room ID: {{ chat.pk }}</div>
+    <div>Room Name: {{ chat.name }}</div>
+
+    <div id="json-roomid" data-room-id="{{ chat.pk }}"></div>
+
+    <script>
+        let roomId = JSON.parse(document.getElementById("json-roomid").getAttribute("data-room-id"));
+        let chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/'
+            + roomId
+            + '/'
+        );
+
+        chatSocket.onmessage = function (e) {
+            console.log('onmessage')
+        }
+
+        chatSocket.onclose = function (e) {
+            console.log('onclose')
+        }
+    </script>
 {% endblock %}
