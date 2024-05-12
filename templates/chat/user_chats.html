@@ -6,7 +6,25 @@
 {% endblock %}
 
 {% block body %}
-    {% for chat in chats %}
-        <a href="{% url 'user-chat' user_id=user.id chat_id=chat.id %}">{{ chat }}</a>
-    {% endfor %}
+    <div class="shadow-lg p-4 mb-5 bg-body rounded" style="margin: 50px;">
+        <div class="chats-header">
+            <h5>Чаты</h5>
+
+            <form action="#" method="POST" class="searchbar">
+                {% csrf_token %}
+                <input type="text" name="search-query" placeholder="Найти по email...">
+                <button type="submit">Поиск</button>
+            </form>
+        </div>
+
+        <hr>
+
+        <div class="chats-body">
+            {% for chat in chats %}
+                <div class="chat">
+                <a href="{% url 'user-chat' user_id=user.id chat_id=chat.id %}">{{ chat }}</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
