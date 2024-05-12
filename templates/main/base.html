@@ -16,7 +16,20 @@
             <a class="header-link" href="{% url 'home' %}"><h1>Jobseeker</h1></a>
             <nav>
                 <ul>
+                {% if user.is_authenticated %}
                     <li><a class="header-link" href="{% url 'user-chats' user_id=user.pk %}">Чаты</a></li>
+                {% else %}
+                    <li>
+                        <a class="header-link" href="#" onclick="showMessage()">Чаты</a>
+                    </li>
+
+                    <div id="overlay" onclick="hideMessage()"></div>
+
+                    <div id="message" style="display: none;">
+                        <span id="tooltip">Пожалуйста, авторизуйтесь</span>
+                        <button onclick="hideMessage()">Закрыть</button>
+                    </div>
+                {% endif %}
                     <li><a class="header-link" href="{% url 'vacancies' %}">Вакансии</a></li>
 
                     {% if user.is_authenticated %}
@@ -105,6 +118,22 @@
                 });
             });
         });
+
+    function showMessage() {
+        var overlay = document.getElementById("overlay");
+        var message = document.getElementById("message");
+        overlay.style.display = "block";
+        message.style.display = "block";
+    }
+
+    function hideMessage() {
+        var overlay = document.getElementById("overlay");
+        var message = document.getElementById("message");
+        overlay.style.display = "none";
+        message.style.display = "none";
+    }
     </script>
+
+
 </body>
 </html>
