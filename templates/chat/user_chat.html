@@ -10,7 +10,12 @@
     <div>Room Name: {{ chat.name }}</div>
 
     <div id="chat-messages">
-        asdad
+        {% for message in chat_messages %}
+            <div>
+                <p>{{ message.user.email }}</p>
+                <p>{{ message.content }}</p>
+            </div>
+        {% endfor %}
     </div>
 
     <div>

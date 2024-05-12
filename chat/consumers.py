@@ -27,6 +27,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         user_email = data['user']
         room = data['room']
 
+        await self.save_message(user_email, room, message)
+
         await self.channel_layer.group_send(
             self.room_group_name,
             {
@@ -47,3 +49,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'user': user_email,
             'room': room
         }))
+
+    @sync_to_async
+    def save_message(self, user_email, room, content):
+        from main.models import CustomUser
+        from .models import Message, Room
+
+        user = CustomUser.objects.get(email=user_email)
+        room = Room.objects.get(pk=room)
+
+        Message.objects.create(
+            user=user,
+            room=room,
+            content=content
+        )
