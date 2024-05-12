@@ -9,8 +9,20 @@
     <div>Room ID: {{ chat.pk }}</div>
     <div>Room Name: {{ chat.name }}</div>
 
-    <div id="json-roomid" data-room-id="{{ chat.pk }}"></div>
+    <div id="chat-messages">
+        asdad
+    </div>
 
+    <div>
+        <form action="" method="post">
+            <input type="text" placeholder="Your message..." id="chat-message-input">
+
+            <button id="chat-message-submit">Отправить</button>
+        </form>
+    </div>
+
+    <div id="json-roomid" data-room-id="{{ chat.pk }}"></div>
+    {{ request.user.email|json_script:"json-email" }}
     <script>
         let roomId = JSON.parse(document.getElementById("json-roomid").getAttribute("data-room-id"));
         let chatSocket = new WebSocket(
@@ -22,11 +34,48 @@
         );
 
         chatSocket.onmessage = function (e) {
-            console.log('onmessage')
+            e.preventDefault()
+
+            let data = JSON.parse(e.data);
+
+            if(data.message){
+                let html = '<div>';
+                html += '<p>' + data.user + '</p>';
+                html += '<p>' + data.message + '</p></div>';
+
+                document.querySelector('#chat-messages').innerHTML += html;
+            } else {
+                alert('The message was empty');
+            }
+
+            return false;
         }
 
         chatSocket.onclose = function (e) {
+            e.preventDefault()
+
             console.log('onclose')
+        }
+
+        let userEmail = JSON.parse(document.getElementById('json-email').textContent)
+
+        document.querySelector('#chat-message-submit').onclick = function (e){
+            e.preventDefault()
+
+            let messageInput = document.querySelector('#chat-message-input');
+            let message = messageInput.value;
+
+            chatSocket.send(
+                JSON.stringify({
+                    'message': message,
+                    'user': userEmail,
+                    'room': roomId
+                })
+            );
+
+            messageInput = '';
+
+            return false;
         }
     </script>
 {% endblock %}
