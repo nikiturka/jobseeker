@@ -66,7 +66,7 @@ class Migration(migrations.Migration):
                 ('expected_salary_range', django.contrib.postgres.fields.ranges.IntegerRangeField()),
                 ('experience', models.DecimalField(decimal_places=1, max_digits=3)),
                 ('profile_picture', models.IntegerField()),
-                ('resume', models.FileField(blank=True, null=True, upload_to='resumes/')),
+                ('resume', models.FileField(blank=True, null=True, upload_to='cv/')),
                 ('contact_info', models.CharField(max_length=200)),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
