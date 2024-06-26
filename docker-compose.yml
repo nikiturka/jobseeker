@@ -36,5 +36,15 @@ services:
     depends_on:
       - redis
 
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    depends_on:
+      - app
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - .:/usr/src/app
+
 volumes:
   pgdbdata:
