@@ -59,7 +59,9 @@
                         {% csrf_token %}
                         <div class="form-group row">
                             <div class="col-sm-10">
-                                <img src="{{ pfp_form.instance.profile_picture.url }}" alt="Profile Picture">
+                                {% if pfp_form.instance.profile_picture %}
+                                    <img src="{{ pfp_form.instance.profile_picture.url }}" alt="Profile Picture">
+                                {% endif %}
                                 {{ pfp_form }}
                             </div>
                         </div>

@@ -48,13 +48,13 @@ class Company(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
 
-    first_name = models.CharField(max_length=32)
-    last_name = models.CharField(max_length=32)
-    expected_salary_range = IntegerRangeField()
-    experience = models.DecimalField(max_digits=3, decimal_places=1)
-    profile_picture = models.ImageField(upload_to='pfp/')
+    first_name = models.CharField(max_length=32, null=True)
+    last_name = models.CharField(max_length=32, null=True)
+    expected_salary_range = IntegerRangeField(null=True)
+    experience = models.DecimalField(max_digits=3, decimal_places=1, null=True)
+    profile_picture = models.ImageField(upload_to='pfp/', null=True)
     resume = models.FileField(upload_to='cv/', blank=True, null=True)
-    contact_info = models.CharField(max_length=200)
+    contact_info = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return self.user.email
@@ -64,10 +64,10 @@ class HR(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
 
     is_hr = models.BooleanField(default=True)
-    first_name = models.CharField(max_length=32)
-    last_name = models.CharField(max_length=32)
-    profile_picture = models.ImageField()
-    contact_info = models.CharField(max_length=200)
+    first_name = models.CharField(max_length=32, null=True)
+    last_name = models.CharField(max_length=32, null=True)
+    profile_picture = models.ImageField(null=True)
+    contact_info = models.CharField(max_length=200, null=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):

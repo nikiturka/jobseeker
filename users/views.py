@@ -49,6 +49,10 @@ def register_user(request):
                 new_hr.save()
 
                 messages.success(request, "Аккаунт нанимателя создан.")
+            else:
+                new_user = UserProfile.objects.create(user=user)
+                new_user.save()
+                messages.success(request, "Аккаунт создан.")
 
             messages.success(request, "Регистрация прошла успешно!")
 
